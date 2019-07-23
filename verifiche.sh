@@ -8,6 +8,8 @@
 #     e carica il file su Minio
 
 S3CMD='s3cmd --config=config_minio.txt'
+numsec=3600
+SECONDS=$numsec
 
 # leggo il file di anagrafica da Minio
      s3cmd --config=config_minio.txt --force get rete-monitoraggio/AnagraficaSensori.csv
@@ -18,12 +20,13 @@ do
   if [[ $(date +"%H") == "05" || ($SECONDS -ge $numsec) ]]
   then
   
-
    #eseguo lo script 
    Rscript A_allineamentoREM.R 
    $S3CMD put allineamentoREM.out s3://rete-monitoraggio
    rm allineamentoREM.out
+   
+   SECONDS=0
+   sleep $numsec
   fi
     
-  sleep 3600
 done
