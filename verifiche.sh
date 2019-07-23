@@ -15,7 +15,9 @@ S3CMD='s3cmd --config=config_minio.txt'
 #endless loop
 while [ 1 ]
 do
-  if [ $(date +"%H") == "05" ]; then
+  if [[ $(date +"%H") == "05" || ($SECONDS -ge $numsec) ]]
+  then
+  
 
    #eseguo lo script 
    Rscript A_allineamentoREM.R 
