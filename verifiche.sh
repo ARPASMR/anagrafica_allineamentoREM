@@ -12,7 +12,8 @@ numsec=3600
 SECONDS=$numsec
 
 # leggo il file di anagrafica da Minio
-     s3cmd --config=config_minio.txt --force get rete-monitoraggio/AnagraficaSensori.csv
+     s3cmd --config=config_minio.txt --force get s3://rete-monitoraggio/AnagraficaSensori.csv ./
+     
 
 #endless loop
 while [ 1 ]
