@@ -140,8 +140,8 @@ REM2_DataMinimaRT <- REM2$DataMinimaRT[oo]
 REM2_DataMassimaRT <- REM2$DataMassimaRT[oo]
 REM2_Frequenza <- REM2$Frequenza[oo]
 #
-REM2_FormWeb <- REM2$VisibilitaWEB[oo]
-REM2_invioPC <- REM2$InvioPC[oo]
+REM2_FormWeb <- REM2$visibilitaweb[oo]
+REM2_invioPC <- REM2$invioPC[oo]
 
 
 DBmeteo<-try(dbGetQuery(conn,"SET NAMES utf8"), silent=TRUE)
