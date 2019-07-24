@@ -35,6 +35,8 @@ fileout_DATAF<-paste(dir_output,"checkDATAF.txt",sep="")
 fileout_STORICO<-paste(dir_output,"checkSTORICO.txt",sep="")
 fileout_FREQUENZA<-paste(dir_output,"checkFREQUENZA.txt",sep="")
 
+fileout_destinazioni<-paste(dir_output,"PC_e_FormWeb.out",sep="")
+
 cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK GENERICI\n\n",file=fileout)
 cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sui ID \n\n",file=fileout_ID)
 cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sui NOMI \n\n",file=fileout_NOME)
@@ -138,8 +140,8 @@ REM2_DataMinimaRT <- REM2$DataMinimaRT[oo]
 REM2_DataMassimaRT <- REM2$DataMassimaRT[oo]
 REM2_Frequenza <- REM2$Frequenza[oo]
 #
-REM2_VisibilitaWEB <- REM2$VisibilitaWEB[oo]
-REM2_InvioPC <- REM2$InvioPC[oo]
+REM2_FormWeb <- REM2$VisibilitaWEB[oo]
+REM2_invioPC <- REM2$InvioPC[oo]
 
 
 DBmeteo<-try(dbGetQuery(conn,"SET NAMES utf8"), silent=TRUE)
@@ -154,7 +156,6 @@ DBmeteo$NOMEstazione<-sub(' +$', '', DBmeteo$NOMEstazione)
 
 #------------------------------------------------------------------------------
 
-cat(" \n\n---------  CONFRONTO REM / DBMETEO --------------\n", file=fileout,append=T)
 cat("\nmmmmmmm    Ricerca sensori appartenenti al DBunico MA NON appartenenti al DBmeteo\n",file=fileout,append=T)
 
 aux<-REM2_idSensore %in% DBmeteo$IDsensore
@@ -756,10 +757,74 @@ datamassima<-as.Date(REM2_DataMassimaRT[j], format="%d/%m/%Y")
       }
     }
 ##################################################################################################
-
   }
   i<-i+1
 } 
+
+# VERIFICO ALLINEAMENTO SUGLI INVII A PROTEZIONE CIVILE E IN FORM WEB
+ii <- which(REM2_invioPC==1)
+IDsensoreREM2_perPC<-REM2_idSensore[ii]
+ComuneREM2_perPC<-REM2_Comune[ii]
+AttributoREM2_perPC<-REM2_Attributo[ii]
+tipologiaREM2_perPC<-REM2_IdTipologia[ii]
+#
+yy <- which(REM2_FormWeb=="S")
+print(length(yy))
+IDsensoreREM2_FormWeb<-REM2_idSensore[yy]
+ComuneREM2_perFormWeb<-REM2_Comune[yy]
+AttributoREM2_perFormWeb<-REM2_Attributo[yy]
+tipologiaREM2_perFormWeb<-REM2_IdTipologia[yy]
+
+#####################            invio PC         ########################
+#
+DBmeteo_dest<-try(dbGetQuery(conn, "select A_Sensori.IDsensore, Comune, Attributo, NOMEtipologia from A_Sensori2Destinazione, A_Sensori,A_Stazioni where A_Stazioni.IDstazione=A_Sensori.IDstazione and A_Sensori.IDsensore=A_Sensori2Destinazione.IDsensore and Destinazione =1 and A_Sensori2Destinazione.DataFine is null"),silent=TRUE)
+#
+cat ( "\n\n ------   INVIO a PROTEZIONE CIVILE   -----\n",file=fileout_destinazioni,append=T)
+cat ( "\n n. sensori da DBmeteo=", length(DBmeteo_dest$IDsensore),"\n",file=fileout_destinazioni,append=T)
+cat ( " n. sensori da REM2=", length(IDsensoreREM2_perPC),"\n",file=fileout_destinazioni,append=T)
+#
+indice_REM2<-which(!IDsensoreREM2_perPC %in% DBmeteo_dest$IDsensore)
+indice_DBmeteo<-which(!DBmeteo_dest$IDsensore %in% IDsensoreREM2_perPC)
+#
+cat(" \n n. sensori solo nel REM2:= ",length(indice_REM2) ,"\n",file=fileout_destinazioni,append=T)
+ii<-1
+while(ii<length(indice_REM2)+1){
+if(is.na(AttributoREM2_perPC[indice_REM2[ii]])==T)AttributoREM2_perPC[indice_REM2[ii]]<-""
+cat(ComuneREM2_perPC[indice_REM2[ii]],AttributoREM2_perPC[indice_REM2[ii]],tipologie_idrometeo_DBmeteo$Nome[tipologie_idrometeo_DBmeteo$IdTipologia==tipologiaREM2_perPC[indice_REM2[ii]]]," IDsens=",IDsensoreREM2_perPC[indice_REM2[ii]],"\n",file=fileout_destinazioni,append=T)
+ii<-ii+1
+}
+#
+cat(" \n n. sensori solo nel DBmeteo:= ",length(indice_DBmeteo) ,"\n",file=fileout_destinazioni,append=T)
+ii<-1
+while(ii<length(indice_DBmeteo)+1){
+cat(DBmeteo_dest$IDsensore[indice_DBmeteo[ii]],DBmeteo_dest$Comune[indice_DBmeteo[ii]],DBmeteo_dest$Attributo[indice_DBmeteo[ii]],DBmeteo_dest$NOMEtipologia[indice_DBmeteo[ii]],"\n",file=fileout_destinazioni,append=T)
+ii<-ii+1
+}
+#####################            FORM WEB         ########################
+#
+DBmeteo_dest<-try(dbGetQuery(conn, "select A_Sensori.IDsensore, Comune, Attributo, NOMEtipologia from A_Sensori2Destinazione, A_Sensori,A_Stazioni where A_Stazioni.IDstazione=A_Sensori.IDstazione and A_Sensori.IDsensore=A_Sensori2Destinazione.IDsensore and Destinazione =13 and A_Sensori2Destinazione.DataFine is null"),silent=TRUE)
+#
+cat ( "\n\n ------   FORM WEB   -----\n",file=fileout_destinazioni,append=T)
+cat ( " \n n. sensori da DBmeteo=", length(DBmeteo_dest$IDsensore),"\n",file=fileout_destinazioni,append=T)
+cat ( " n. sensori da REM2=", length(IDsensoreREM2_FormWeb),"\n",file=fileout_destinazioni,append=T)
+#
+indice_REM2<-which(!IDsensoreREM2_FormWeb %in% DBmeteo_dest$IDsensore)
+indice_DBmeteo<-which(!DBmeteo_dest$IDsensore %in% IDsensoreREM2_FormWeb)
+#
+cat(" \n n. sensori solo nel REM2:= ",length(indice_REM2) ,"\n",file=fileout_destinazioni,append=T)
+ii<-1
+while(ii<length(indice_REM2)+1){
+if(is.na(AttributoREM2_perFormWeb[indice_REM2[ii]])==T)AttributoREM2_perFormWeb[indice_REM2[ii]]<-""
+cat(ComuneREM2_perFormWeb[indice_REM2[ii]],AttributoREM2_perFormWeb[indice_REM2[ii]], tipologie_idrometeo_DBmeteo$Nome[tipologie_idrometeo_DBmeteo$IdTipologia==tipologiaREM2_perFormWeb[indice_REM2[ii]]]," IDsens=",IDsensoreREM2_FormWeb[indice_REM2[ii]],"\n",file=fileout_destinazioni,append=T)
+ii<-ii+1
+}
+#
+cat(" \n n. sensori solo nel DBmeteo:= ",length(indice_DBmeteo) ,"\n",file=fileout_destinazioni,append=T)
+ii<-1
+while(ii<length(indice_DBmeteo)+1){
+cat(DBmeteo$IDsensore[indice_DBmeteo[ii]],DBmeteo_dest$Comune[indice_DBmeteo[ii]],DBmeteo_dest$Attributo[indice_DBmeteo[ii]],DBmeteo_dest$NOMEtipologia[indice_DBmeteo[ii]],"\n",file=fileout_destinazioni,append=T)
+ii<-ii+1
+}
 
 system('cat generico.txt check*.txt> allineamentoREM.out')
 system('rm generico.txt check*.txt')
