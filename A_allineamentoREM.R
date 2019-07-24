@@ -822,7 +822,7 @@ ii<-ii+1
 cat(" \n n. sensori solo nel DBmeteo:= ",length(indice_DBmeteo) ,"\n",file=fileout_destinazioni,append=T)
 ii<-1
 while(ii<length(indice_DBmeteo)+1){
-cat(DBmeteo$IDsensore[indice_DBmeteo[ii]],DBmeteo_dest$Nome[indice_DBmeteo[ii]], DBmeteo_dest$NOMEtipologia[indice_DBmeteo[ii]],"\n",file=fileout_destinazioni,append=T)
+cat(DBmeteo_dest$IDsensore[indice_DBmeteo[ii]],DBmeteo_dest$Nome[indice_DBmeteo[ii]], DBmeteo_dest$NOMEtipologia[indice_DBmeteo[ii]],"\n",file=fileout_destinazioni,append=T)
 ii<-ii+1
 }
 
