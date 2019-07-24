@@ -33,6 +33,7 @@ do
        exit 1
    else # caricamento su MINIO 
        $S3CMD put allineamentoREM.out s3://rete-monitoraggio 
+       $S3CMD put PC_e_FormWeb.out s3://rete-monitoraggio 
 
        # controllo sul caricamento su MINIO 
        if [ $? -ne 0 ]
