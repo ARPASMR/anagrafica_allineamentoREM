@@ -58,7 +58,7 @@ cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sulla FREQUE
 #==============================================================================
 ####   per ripulire eventuali caratteri invisibili.....
 file_anagrafica <- paste(dir_anagrafica,"AnagraficaSensori.csv",sep="")
-cat file_anagrafica | tr -d '\277' | tr -d '\273' | tr -d '\357' > file_anagrafica
+#cat file_anagrafica | tr -d '\277' | tr -d '\273' | tr -d '\357' > file_anagrafica
 REM2 <- read.csv ( file_anagrafica , header = TRUE , dec=",", quote="\"", as.is = TRUE, sep=";", na.strings = c("-9999","")) 
 
 #==============================================================================
@@ -762,7 +762,7 @@ datamassima<-as.Date(REM2_DataMassimaRT[j], format="%d/%m/%Y")
 } 
 
 system('cat generico.txt check*.txt> allineamentoREM.out')
-system('rm generico.txt check*.txt1G')
+system('rm generico.txt check*.txt')
 
 #------------------------------------------------------------------------------
 dbDisconnect(conn)
