@@ -23,8 +23,26 @@ do
   
    #eseguo lo script 
    Rscript A_allineamentoREM.R 
-   $S3CMD put allineamentoREM.out s3://rete-monitoraggio
-   rm allineamentoREM.out
+   
+   # verifico se è andato a buon fine
+   STATO=$?
+   echo "STATO USCITA SCRIPT ====> "$STATO
+
+   if [ "$STATO" -eq 1 ] # se si sono verificate anomalie esci 
+   then
+       exit 1
+   else # caricamento su MINIO 
+       $S3CMD put allineamentoREM.out s3://rete-monitoraggio 
+
+       # controllo sul caricamento su MINIO 
+       if [ $? -ne 0 ]
+       then
+         echo "problema caricamento su MINIO"
+         exit 1
+       fi
+   fi
+    
+   rm -f allineamentoREM.out
    
    SECONDS=0
    sleep $numsec
