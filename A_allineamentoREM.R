@@ -777,7 +777,7 @@ tipologiaREM2_perFormWeb<-REM2_IdTipologia[yy]
 
 #####################            invio PC         ########################
 #
-DBmeteo_dest<-try(dbGetQuery(conn, "select A_Sensori.IDsensore, CONCAT(Comune," ",IFNULL(Attributo,"")) as Nome, NOMEtipologia from A_Sensori2Destinazione, A_Sensori,A_Stazioni where A_Stazioni.IDstazione=A_Sensori.IDstazione and A_Sensori.IDsensore=A_Sensori2Destinazione.IDsensore and Destinazione =1 and A_Sensori2Destinazione.DataFine is null"),silent=TRUE)
+DBmeteo_dest<-try(dbGetQuery(conn, "select A_Sensori.IDsensore, CONCAT(Comune,' ',IFNULL(Attributo,'')) as Nome, NOMEtipologia from A_Sensori2Destinazione, A_Sensori,A_Stazioni where A_Stazioni.IDstazione=A_Sensori.IDstazione and A_Sensori.IDsensore=A_Sensori2Destinazione.IDsensore and Destinazione =1 and A_Sensori2Destinazione.DataFine is null"),silent=TRUE)
 #
 cat ( "\n\n ------   INVIO a PROTEZIONE CIVILE   -----\n",file=fileout_destinazioni,append=T)
 cat ( "\n n. sensori da DBmeteo=", length(DBmeteo_dest$IDsensore),"\n",file=fileout_destinazioni,append=T)
@@ -802,7 +802,7 @@ ii<-ii+1
 }
 #####################            FORM WEB         ########################
 #
-DBmeteo_dest<-try(dbGetQuery(conn, "select A_Sensori.IDsensore, CONCAT(Comune," ",IFNULL(Attributo,"")) as Nome, NOMEtipologia from A_Sensori2Destinazione, A_Sensori,A_Stazioni where A_Stazioni.IDstazione=A_Sensori.IDstazione and A_Sensori.IDsensore=A_Sensori2Destinazione.IDsensore and Destinazione =13 and A_Sensori2Destinazione.DataFine is null"),silent=TRUE)
+DBmeteo_dest<-try(dbGetQuery(conn, "select A_Sensori.IDsensore, CONCAT(Comune,' ',IFNULL(Attributo,'')) as Nome, NOMEtipologia from A_Sensori2Destinazione, A_Sensori,A_Stazioni where A_Stazioni.IDstazione=A_Sensori.IDstazione and A_Sensori.IDsensore=A_Sensori2Destinazione.IDsensore and Destinazione =13 and A_Sensori2Destinazione.DataFine is null"),silent=TRUE)
 #
 cat ( "\n\n ------   FORM WEB   -----\n",file=fileout_destinazioni,append=T)
 cat ( " \n n. sensori da DBmeteo=", length(DBmeteo_dest$IDsensore),"\n",file=fileout_destinazioni,append=T)
