@@ -68,7 +68,7 @@ n <- 1
 while(n < nmax + 1){  #
 #
 # info da REM2
-REM2_idSensore <- REM2$X.Idsensore[ii]
+REM2_idSensore <- REM2$Idsensore[ii]
 REM2_colonna <- eval(parse(text=paste("REM2$X",n,"[ii]",sep="")))
 REM2_NOMEcolonna <- eval(parse(text=paste("REM2$X",n,"[1]",sep="")))
 if (is.null(REM2_colonna) == T){
