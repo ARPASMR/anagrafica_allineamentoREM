@@ -55,7 +55,7 @@ anagraficaDBmeteo <- try(dbGetQuery(conn, "select IDsensore , NOMEtipologia , CO
 #
 # individuo nel file di estrazione del REM l'indice dei record relativi a sensori presenti nel DBmeteo
 sensori_DBmeteo<-try(dbGetQuery(conn, "select IDsensore from A_Sensori"),silent=TRUE)
-ii <- which(REM2$X.Idsensore %in% sensori_DBmeteo$IDsensore)
+ii <- which(REM2$Idsensore %in% sensori_DBmeteo$IDsensore)
 #
 
 #################################
@@ -79,7 +79,7 @@ if (is.null(REM2_colonna) == T){
  REM2_idSensore_destinazione<-REM2_idSensore[ss]
  # cerco destinazione corrispondente nel DBmeteo
  destinazione<-try(dbGetQuery(conn, paste("select IDdestinazione,Destinazione,IDdestinazioneREM,DestinazioneREM from A_Destinazioni where IDdestinazioneREM =",n,sep="")),silent=TRUE)
- if (n!=3 && (is.null(destinazione$IDdestinazione) == T)){ # se non si tratta della importazione dati nel DBmeteo ma non è in tabella A_Destinazioni
+ if (n!=3 && (length(destinazione$IDdestinazione) == 0)){ # se non si tratta della importazione dati nel DBmeteo ma non è in tabella A_Destinazioni
   # non esiste nel DBmeteo.
   if(length(REM2_idSensore_destinazione)>0)cat( " ATTENZIONE  # REM: ID=",n," " , REM2_NOMEcolonna, " - NON ESISTE NEL DBMETEO MA COMPRENDE ", length(REM2_idSensore_destinazione), " SENSORI PRESENTI NEL DBMETEO  \n",file=fileout,append=T)
  }else{
