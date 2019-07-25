@@ -11,16 +11,17 @@ S3CMD='s3cmd --config=config_minio.txt'
 numsec=3600
 SECONDS=$numsec
 
-# leggo il file di anagrafica da Minio
-     s3cmd --config=config_minio.txt --force get s3://rete-monitoraggio/AnagraficaSensori.csv ./
-     
-
 #endless loop
 while [ 1 ]
 do
   if [[ $(date +"%H") == "05" || ($SECONDS -ge $numsec) ]]
   then
   
+  
+  ################# 1 #################################
+   # leggo il file di anagrafica da Minio
+     s3cmd --config=config_minio.txt --force get s3://rete-monitoraggio/AnagraficaSensori.csv ./
+     
    #eseguo lo script 
    Rscript A_allineamentoREM.R 
    
@@ -44,6 +45,36 @@ do
    fi
     
    rm -f allineamentoREM.out
+   
+    
+   ################# 2 #################################
+   
+   # leggo il file di anagrafica da Minio
+     s3cmd --config=config_minio.txt --force get s3://rete-monitoraggio/AnagraficaEstrazioni.csv ./
+     
+   #eseguo lo script 
+   Rscript estrazioni.R 
+   
+   # verifico se è andato a buon fine
+   STATO=$?
+   echo "STATO USCITA SCRIPT ====> "$STATO
+
+   if [ "$STATO" -eq 1 ] # se si sono verificate anomalie esci 
+   then
+       exit 1
+   else # caricamento su MINIO 
+       $S3CMD put diff_estrazioni.out s3://rete-monitoraggio 
+       
+       # controllo sul caricamento su MINIO 
+       if [ $? -ne 0 ]
+       then
+         echo "problema caricamento su MINIO"
+         exit 1
+       fi
+   fi
+    
+   rm -f diff_estrazioni.out
+   
    
    SECONDS=0
    sleep $numsec
