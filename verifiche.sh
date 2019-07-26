@@ -6,6 +6,10 @@
 # 2.  legge da Minio il file con le estrazioni dati dal REM estratto dal REM ogni giorno, 
 #     scrive su file eventuali discrepanze con quello che risulta al DBmeteo
 #     e carica il file su Minio
+# 3.  esegue verifiche sulla compilazione dei campi di anagrafica nel DBmeteo
+#     scrive su file eventuali lacune
+#     e carica il file su Minio
+
 
 S3CMD='s3cmd --config=config_minio.txt'
 numsec=3600
@@ -75,6 +79,29 @@ do
     
    rm -f diff_estrazioni.out
    
+   ################# 3 #################################
+   
+   Rscript A_verifiche.R 
+   
+   # verifico se è andato a buon fine
+   STATO=$?
+   echo "STATO USCITA SCRIPT ====> "$STATO
+
+   if [ "$STATO" -eq 1 ] # se si sono verificate anomalie esci 
+   then
+       exit 1
+   else # caricamento su MINIO 
+       $S3CMD put verifiche.out s3://rete-monitoraggio 
+       
+       # controllo sul caricamento su MINIO 
+       if [ $? -ne 0 ]
+       then
+         echo "problema caricamento su MINIO"
+         exit 1
+       fi
+   fi
+    
+   rm -f verifiche.out
    
    SECONDS=0
    sleep $numsec
