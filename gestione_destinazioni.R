@@ -15,7 +15,7 @@ neverstop<-function(){
 }
 options(show.error.messages=TRUE,error=neverstop)
 
-file_out <- "gestione_destinazioni.txt"
+file_out <- "gestione_destinazioni.out"
     cat("\tcontrolli destinazioni  -  ", date(), "\n", file=file_out)
 #
 #___________________________________________________
