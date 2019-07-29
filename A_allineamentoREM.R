@@ -55,6 +55,8 @@ cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sulla DATA M
 cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sulla flag di STORICO \n\n",file=fileout_STORICO)
 cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sulla FREQUENZA \n\n",file=fileout_FREQUENZA)
 
+cat ( " ------   invii a PROTEZIONE CIVILE e disponibilità in FORM WEB   -----\n",file=fileout_destinazioni)
+
 #==============================================================================
 #   LEGGO INFO DEL REM 
 #==============================================================================
