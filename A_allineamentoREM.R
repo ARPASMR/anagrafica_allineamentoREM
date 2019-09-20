@@ -180,7 +180,7 @@ aux<-REM2_idSensore %in% DBmeteo$IDsensore
        as.vector(REM2_IdReteVis[!aux][iii])  ,"\n",file=fileout,append=T)
     }else{
    # se è tipologia di diagnostica segnalo solo se è rete INM
-   if( REM2_IdReteVis[!aux][iii] == 4 ){
+   if( REM2_IdReteVis[!aux][iii] == 3 ){
    cat(as.vector(REM2_idSensore[!aux][iii]),
        ",",
        as.vector(REM2_idStazione[!aux][iii]),
