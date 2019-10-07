@@ -23,7 +23,7 @@ file_out <- "gestione_destinazioni.out"
 #___________________________________________________
 # connessione al DB
 drv<-dbDriver("MySQL")
-conn<-try(dbConnect(drv, user="guardone", password=as.character(Sys.getenv("MYSQL_PWD")), dbname="METEO", host="10.10.0.6"))
+conn<-try(dbConnect(drv, user=as.character(Sys.getenv("MYSQL_USR")), password=as.character(Sys.getenv("MYSQL_PWD")), dbname=as.character(Sys.getenv("MYSQL_DBNAME")), host=as.character(Sys.getenv("MYSQL_HOST"))))
 
 if (inherits(conn,"try-error")) {
   print( "ERRORE nell'apertura della connessione al DB \n")
