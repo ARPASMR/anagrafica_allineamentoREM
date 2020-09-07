@@ -44,7 +44,7 @@ cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sulle LOCALI
 cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sull ATTRIBUTO \n\n",file=fileout_ATT)
 cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sui COMUNI \n\n",file=fileout_COMUNE)
 cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sulle PROVINCE \n\n",file=fileout_PROVINCIA)
-cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sulle BACINO \n\n",file=fileout_BACINO)
+#cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sulle BACINO \n\n",file=fileout_BACINO)
 cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sulle FIUME \n\n",file=fileout_FIUME)
 cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sulle RETI \n\n",file=fileout_RETE)
 cat(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><  ESITO DEI CHECK sulla QUOTA \n\n",file=fileout_QUOTA)
@@ -420,26 +420,26 @@ REM2_Comune[j] <- iconv(REM2_Comune[j], to="ASCII//TRANSLIT")
     }
 
 ######################    controllo sui BACINI delle stazioni     ##################################
-    if ( is.na(DBmeteo$Bacino[i]) | is.na(REM2_Bacino[j]) ) {
-      if ( is.na(DBmeteo$Bacino[i]) & is.na(REM2_Bacino[j]) ) {
+#    if ( is.na(DBmeteo$Bacino[i]) | is.na(REM2_Bacino[j]) ) {
+#      if ( is.na(DBmeteo$Bacino[i]) & is.na(REM2_Bacino[j]) ) {
   #      cat("NOMEstazione...OK\n",file=fileout,append=T)
-      } else {
-  cat("-----------------------------------------------------------------\n",file=fileout_BACINO,append=T)
-  cat(paste(i,". ID stazione =",DBmeteo$IDstazione[i],DBmeteo$NOMEstazione[i]),"\n",file=fileout_BACINO,append=T)
-        cat(paste("DBmeteo: ",DBmeteo$Bacino[i]),"\n",file=fileout_BACINO,append=T)
-        cat(paste("DBunico: ",REM2_Bacino[j]),"\n",file=fileout_BACINO,append=T)
-      }
-    } else {
-      ###if (DBmeteo$Provincia[i]==REM2_Provincia[j]){
-      if ((DBmeteo$Bacino[i]==REM2_Bacino[j])|(DBmeteo$Bacino[i]=="--" & REM2_Bacino[j]=="ND")){
-  #      cat("NOMEstazione...OK\n",file=fileout,append=T)
-      } else {
-#  cat("-----------------------------------------------------------------\n",file=fileout_PROVINCIA,append=T)
-  cat(paste(i,". ID stazione =",DBmeteo$IDstazione[i],DBmeteo$NOMEstazione[i]),"\n",file=fileout_BACINO,append=T)
-        cat(paste("DBmeteo: ",DBmeteo$Bacino[i]),"\n",file=fileout_BACINO,append=T)
-        cat(paste("DBunico: ",REM2_Bacino[j]),"\n",file=fileout_BACINO,append=T)
-      }
-    }
+#      } else {
+#  cat("-----------------------------------------------------------------\n",file=fileout_BACINO,append=T)
+#  cat(paste(i,". ID stazione =",DBmeteo$IDstazione[i],DBmeteo$NOMEstazione[i]),"\n",file=fileout_BACINO,append=T)
+#        cat(paste("DBmeteo: ",DBmeteo$Bacino[i]),"\n",file=fileout_BACINO,append=T)
+#        cat(paste("DBunico: ",REM2_Bacino[j]),"\n",file=fileout_BACINO,append=T)
+#      }
+#    } else {
+#      ###if (DBmeteo$Provincia[i]==REM2_Provincia[j]){
+#      if ((DBmeteo$Bacino[i]==REM2_Bacino[j])|(DBmeteo$Bacino[i]=="--" & REM2_Bacino[j]=="ND")){
+#  #      cat("NOMEstazione...OK\n",file=fileout,append=T)
+#      } else {
+##  cat("-----------------------------------------------------------------\n",file=fileout_PROVINCIA,append=T)
+#  cat(paste(i,". ID stazione =",DBmeteo$IDstazione[i],DBmeteo$NOMEstazione[i]),"\n",file=fileout_BACINO,append=T)
+#        cat(paste("DBmeteo: ",DBmeteo$Bacino[i]),"\n",file=fileout_BACINO,append=T)
+#        cat(paste("DBunico: ",REM2_Bacino[j]),"\n",file=fileout_BACINO,append=T)
+#      }
+#    }
 
 ######################    controllo sulle PROVINCE delle stazioni     ##################################
 # converto i NULL  e i "NA" in NA
@@ -484,14 +484,14 @@ if(is.null(REM2_Provincia[i])==T)REM2_Provincia[i]=NA
 ## ETV              21     6
 ## ARPA Veneto      25     5
 ## Rete Lampo       24     3
-
+## Provincia Trento 23     5
 
 REM2Rete <- 0
 if (REM2_IdReteVis[j]==6) REM2Rete <- 1 #aria
 if (REM2_IdReteVis[j]==7) REM2Rete <- 2 #cmg
 if (REM2_IdReteVis[j]==3) REM2Rete <- 4 #inm
 if (REM2_IdReteVis[j]==24) REM2Rete <- 3 #lampo
-if (REM2_IdReteVis[j]==1 | REM2_IdReteVis[j]==5 | REM2_IdReteVis[j]==12 | REM2_IdReteVis[j]==25 ) REM2Rete <- 5 # extra lombardia
+if (REM2_IdReteVis[j]==1 | REM2_IdReteVis[j]==5 | REM2_IdReteVis[j]==12 | REM2_IdReteVis[j]==25 | REM2_IdReteVis[j]==23 ) REM2Rete <- 5 # extra lombardia
 if (REM2_IdReteVis[j]==2 | REM2_IdReteVis[j]==4 | REM2_IdReteVis[j]==8 | REM2_IdReteVis[j]==9 | REM2_IdReteVis[j]==10 | REM2_IdReteVis[j]==11 | REM2_IdReteVis[j]==16| REM2_IdReteVis[j]==21) REM2Rete <- 6 # altro 
 if ((REM2_IdReteVis[j]==12 | REM2_IdReteVis[j]==4) && (REM2_Provincia[j] %in% c('CR','PV','MN'))) REM2Rete <- 6 # altro 
 if ((REM2_IdReteVis[j]==12 | REM2_IdReteVis[j]==4) && (REM2_Provincia[j] %in% c('VR','VC'))) REM2Rete <- 5 # Extra Lombardia 
