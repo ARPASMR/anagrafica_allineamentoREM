@@ -743,10 +743,11 @@ datamassima<-as.Date(REM2_DataMassimaRT[j], format="%d/%m/%Y")
 ## nel REM i pluviometri al minuto CAE risultano ai 10 minuti quindi prima di confrontare li porto a 1
 ## condizioni sul sensore: appartenenza rete INM, non storici, tipologia pluvio
 ##    if (REM2_Storico[j]==0 & REM2_Frequenza[j]==10 & REM2_IdReteVis[j]==3 & REM2_IdTipologia[j]==2) REM2_Frequenza[j]<-1
+  if(DBmeteo$Storico[i]=="No"){
     if ( is.na(DBmeteo$AggregazioneTemporale[i]) | is.na(REM2_Frequenza[j]) ) {
-      if ( is.na(DBmeteo$AggregazioneTemporale[i]) & is.na(REM2_Frequenza[j]) ) {
+     if ( is.na(DBmeteo$AggregazioneTemporale[i]) & is.na(REM2_Frequenza[j]) ) {
   #      cat("NOMEstazione...OK\n",file=fileout,append=T)
-      } else {
+     } else {
   cat("-----------------------------------------------------------------\n",file=fileout_QUOTA,append=T)
   cat(paste(i,". ID sensore =",DBmeteo$IDsensore[i],"  tip=",DBmeteo$NOMEtipologia[i],"  staz=",DBmeteo$IDstazione[i],DBmeteo$NOMEstazione[i]),"\n",file=fileout_FREQUENZA,append=T)
         cat(paste("DBmeteo: ",DBmeteo$AggregazioneTemporale[i]),"\n",file=fileout_FREQUENZA,append=T)
@@ -762,6 +763,7 @@ datamassima<-as.Date(REM2_DataMassimaRT[j], format="%d/%m/%Y")
         cat(paste("DBunico: ",REM2_Frequenza[j]),"\n",file=fileout_FREQUENZA,append=T)
       }
     }
+  }
 ##################################################################################################
   }
   i<-i+1
