@@ -11,11 +11,11 @@
 #     scrive su file eventuali lacune
 #     e carica il file su Minio
 #
+###############  non eseguito perchè sostituito da dashboard di grafana #########
 # 4.  esegue verifiche sui sensori inviati a PC
 #     scrive su file eventuali discrepanze rispetto agli invii attesi
 #     e carica il file su Minio
-#
-####################################
+#################################################################################
 
 S3CMD='s3cmd --config=config_minio.txt'
 numsec=3600
@@ -111,27 +111,27 @@ do
    
    ################# 3 #################################
    
-   Rscript gestione_destinazioni.R 
-   
-   # verifico se è andato a buon fine
-   STATO=$?
-   echo "STATO USCITA SCRIPT ====> "$STATO
+  # Rscript gestione_destinazioni.R 
+  # 
+  # verifico se è andato a buon fine
+  #STATO=$?
+  #echo "STATO USCITA SCRIPT ====> "$STATO
 
-   if [ "$STATO" -eq 1 ] # se si sono verificate anomalie esci 
-   then
-       exit 1
-   else # caricamento su MINIO 
-       $S3CMD put gestione_destinazioni.out s3://rete-monitoraggio 
-       
-       # controllo sul caricamento su MINIO 
-       if [ $? -ne 0 ]
-       then
-         echo "problema caricamento su MINIO"
-         exit 1
-       fi
-   fi
+   #if [ "$STATO" -eq 1 ] # se si sono verificate anomalie esci 
+   #then
+   #    exit 1
+   #else # caricamento su MINIO 
+   #    $S3CMD put gestione_destinazioni.out s3://rete-monitoraggio 
+   #    
+   #    # controllo sul caricamento su MINIO 
+   #    if [ $? -ne 0 ]
+   #    then
+   #      echo "problema caricamento su MINIO"
+   #      exit 1
+   #    fi
+   #fi
     
-   rm -f gestione_destinazioni.out
+  #  rm -f gestione_destinazioni.out
    
    SECONDS=0
    sleep $numsec
