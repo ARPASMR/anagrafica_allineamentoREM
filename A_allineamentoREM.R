@@ -485,13 +485,14 @@ if(is.null(REM2_Provincia[i])==T)REM2_Provincia[i]=NA
 ## ARPA Veneto      25     5
 ## Rete Lampo       24     3
 ## Provincia Trento 23     5
+## Valle dAosta     26     5
 
 REM2Rete <- 0
 if (REM2_IdReteVis[j]==6) REM2Rete <- 1 #aria
 if (REM2_IdReteVis[j]==7) REM2Rete <- 2 #cmg
 if (REM2_IdReteVis[j]==3) REM2Rete <- 4 #inm
 if (REM2_IdReteVis[j]==24) REM2Rete <- 3 #lampo
-if (REM2_IdReteVis[j]==1 | REM2_IdReteVis[j]==5 | REM2_IdReteVis[j]==12 | REM2_IdReteVis[j]==25 | REM2_IdReteVis[j]==23 ) REM2Rete <- 5 # extra lombardia
+if (REM2_IdReteVis[j]==1 | REM2_IdReteVis[j]==5 | REM2_IdReteVis[j]==12 | REM2_IdReteVis[j]==25 | REM2_IdReteVis[j]==23 | REM2_IdReteVis[j]==26) REM2Rete <- 5 # extra lombardia
 if (REM2_IdReteVis[j]==2 | REM2_IdReteVis[j]==4 | REM2_IdReteVis[j]==8 | REM2_IdReteVis[j]==9 | REM2_IdReteVis[j]==10 | REM2_IdReteVis[j]==11 | REM2_IdReteVis[j]==16| REM2_IdReteVis[j]==21) REM2Rete <- 6 # altro 
 if ((REM2_IdReteVis[j]==12 | REM2_IdReteVis[j]==4) && (REM2_Provincia[j] %in% c('CR','PV','MN'))) REM2Rete <- 6 # altro 
 if ((REM2_IdReteVis[j]==12 | REM2_IdReteVis[j]==4) && (REM2_Provincia[j] %in% c('VR','VC'))) REM2Rete <- 5 # Extra Lombardia 
